@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="card">
+        <div class="card" @mousemove="mousemove" @mouseenter="mouseenter" @mouseleave="mouseleave">
             <div class="sneaker">
                 <div class="circle"></div>
                 <img src="../assets/adidas.png" alt="adidas">
@@ -27,10 +27,62 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+            x: 0,
+            y: 0,
+            card: 0,
+            title: 0,
+            sneaker: 0,
+            description: 0,
+            sizes: 0,
+            purchase: 0
+    }  
+  },
+  mounted(){
+
+    this.card = document.querySelector('.card');
+    this.container = document.querySelector('.container');
+    this.title = document.querySelector('.title');
+    this.sneaker = document.querySelector('.sneaker img');
+    this.circle = document.querySelector('.circle');
+    this.purchase = document.querySelector('.purchase button');
+    this.description = document.querySelector('.info h3');
+    this.sizes = document.querySelector('.sizes');
+    },
+    methods:{
+        mousemove: function(){
+            this.x = event.clientX;
+            this.y = event.clientY;
+            let xAxis = (window.innerWidth / 2 - event.pageX) / 25;
+            let yAxis = -(window.innerHeight / 2 - event.pageY) / 25;
+            this.card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            console.log(this.x);
+        },
+        mouseenter: function(){
+            this.card.style.transition = 'none';
+            //マウスを要素の上に置いたときの文字の動き
+            this.title.style.transform = "translateZ(150px)";
+            // circle.style.transform = "translateZ(150px)";
+            this.sneaker.style.transform = "translateZ(200px) rotateZ(-45deg)";
+            this.description.style.transform = "translateZ(125px)";
+            this.sizes.style.transform = "translateZ(100px)";
+            this.purchase.style.transform = "translateZ(75px)";
+        },
+        mouseleave: function(){
+            this.card.style.transition = 'all 0.5s ease';
+            this.card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            //マウスを要素から離した時の文字の動き
+            this.title.style.transform = "translateZ(0px)";
+            // circle.style.transform = "translateZ(0px)";
+            this.sneaker.style.transform = "translateZ(0px) rotateZ(0deg)";
+            this.description.style.transform = "translateZ(0px)";
+            this.sizes.style.transform = "translateZ(0px)";
+            this.purchase.style.transform = "translateZ(0px)";
+        }
     }
-  }
+    
 }
+
 </script>
 
 <style scoped>
@@ -40,16 +92,17 @@ export default {
     box-sizing: border-box;
 }
   
-body {
+/* body {
     font-family: "Poppins", sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     perspective: 1000px;
-}
+} */
 
 .container {
+    perspective: 1000px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -58,7 +111,7 @@ body {
 
 .card{
     /* 子要素が立体的になる */
-    width: 50%;
+    /* width: 50%; */
     transform-style: preserve-3d; 
     min-height: 85vh;
     width: 27rem;
